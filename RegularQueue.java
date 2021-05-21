@@ -7,22 +7,8 @@ import java.util.ArrayList;
  *	@author Joel Karel
  *	@version %I%, %G%
  */
-public class Queue implements ProductAcceptor
+public class RegularQueue extends Queue implements ProductAcceptor
 {
-	/** List in which the products are kept */
-	private ArrayList<Product> row;
-	/** Requests from machine that will be handling the products */
-	private ArrayList<Machine> requests;
-	
-	/**
-	*	Initializes the queue and introduces a dummy machine
-	*	the machine has to be specified later
-	*/
-	public Queue()
-	{
-		row = new ArrayList<>();
-		requests = new ArrayList<>();
-	}
 	
 	/**
 	*	Asks a queue to give a product to a machine
@@ -71,9 +57,5 @@ public class Queue implements ProductAcceptor
 				row.add(p); // Otherwise store it
 		}
 		return true;
-	}
-	
-	public int getQueueLength() {
-		return row.size();
 	}
 }

@@ -8,6 +8,8 @@ package Simulation;
  */
 public interface ProductAcceptor
 {
+
+	
 	/**
 	*	Method to have this object process an event
 	*	@param p	The product that is accepted

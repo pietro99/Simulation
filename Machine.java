@@ -10,23 +10,23 @@ package Simulation;
 public class Machine implements CProcess,ProductAcceptor
 {
 	/** Product that is being handled  */
-	private Product product;
+	protected Product product;
 	/** Eventlist that will manage events */
-	private final CEventList eventlist;
+	protected final CEventList eventlist;
 	/** Queue from which the machine has to take products */
-	private Queue queue;
+	protected Queue queue;
 	/** Sink to dump products */
-	private ProductAcceptor sink;
+	protected ProductAcceptor sink;
 	/** Status of the machine (b=busy, i=idle) */
-	private char status;
+	protected char status;
 	/** Machine name */
-	private final String name;
+	protected final String name;
 	/** Mean processing time */
-	private double meanProcTime;
+	protected double meanProcTime;
 	/** Processing times (in case pre-specified) */
-	private double[] processingTimes;
+	protected double[] processingTimes;
 	/** Processing time iterator */
-	private int procCnt;
+	protected int procCnt;
 	
 
 	/**
