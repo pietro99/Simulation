@@ -39,27 +39,43 @@ public class Simulation {
 	Machine GPU_server1 = new ServerGPU(GPU_q, regular_q, GPU_si,l,"GPU Server 1", 240, 50);
 	Machine GPU_server2 = new ServerGPU(GPU_q, regular_q, GPU_si,l,"GPU Server 2", 240, 50);
 
-	Machine regular_server1 = new Server(GPU_q,GPU_si,l,"regular Server 1", 145, 42);
-	Machine regular_server2 = new Server(GPU_q,GPU_si,l,"regular Server 2", 145, 42);
-	Machine regular_server3 = new Server(GPU_q,GPU_si,l,"regular Server 3", 145, 42);
-	Machine regular_server4 = new Server(GPU_q,GPU_si,l,"regular Server 4", 145, 42);
-	Machine regular_server5 = new Server(GPU_q,GPU_si,l,"regular Server 5", 145, 42);
-	Machine regular_server6 = new Server(GPU_q,GPU_si,l,"regular Server 6", 145, 42);
+	Machine regular_server1 = new Server(regular_q,regular_si,l,"regular Server 1", 145, 42);
+	Machine regular_server2 = new Server(regular_q,regular_si,l,"regular Server 2", 145, 42);
+	Machine regular_server3 = new Server(regular_q,regular_si,l,"regular Server 3", 145, 42);
+	Machine regular_server4 = new Server(regular_q,regular_si,l,"regular Server 4", 145, 42);
+	Machine regular_server5 = new Server(regular_q,regular_si,l,"regular Server 5", 145, 42);
+	Machine regular_server6 = new Server(regular_q,regular_si,l,"regular Server 6", 145, 42);
 
 	l.start(20000); // 2000 is maximum time
+	System.out.println();
 
 	
-	/**
-	 * 
-	 
-	checking out the sink
+	String[] events_ = regular_si.getEvents();
+	double[] times_ = regular_si.getTimes();
+	String[]stations_ = regular_si.getStations();
+	int[] numbers_ = regular_si.getNumbers();
+	System.out.println("regular jobs \n");
+	for(int i = 0; i< times_.length; i++) {
+		System.out.println("number = " + numbers_[i]);
+		System.out.println("event = " + events_[i]);
+		System.out.println("time = " + times_[i]);
+		System.out.println("station = " + stations_[i]);
+		System.out.println();
+	}
 	
 	String[] events = GPU_si.getEvents();
 	double[] times = GPU_si.getTimes();
+	String[]stations = GPU_si.getStations();
+	int[] numbers = GPU_si.getNumbers();
+	System.out.println("GPU jobs \n");
 	for(int i = 0; i< times.length; i++) {
-		System.out.print(times[i]+" "+events[i]+",  ");
+		System.out.println("number = " + numbers[i]);
+		System.out.println("event = " + events[i]);
+		System.out.println("time = " + times[i]);
+		System.out.println("station = " + stations[i]);
+		System.out.println();
 	}
-	 **/ 
+	
 
     }
     
