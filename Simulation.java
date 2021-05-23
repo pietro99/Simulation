@@ -27,8 +27,8 @@ public class Simulation {
 	Queue regular_q = new Queue();
 
 	// A source
-	GPUSource gpu_s = new GPUSource(GPU_q,l,"GPU Source");
-	RegularSource regular_s = new RegularSource(regular_q, l, "Regular Source", 300);
+	GPUSource gpu_s = new GPUSource(GPU_q,l,"GPU Source", 300);
+	RegularSource regular_s = new RegularSource(regular_q, l, "Regular Source");
 
 	// A sink
 	Sink GPU_si = new Sink("GPU sink");
@@ -38,7 +38,7 @@ public class Simulation {
 	// gpu server
 	Machine GPU_m = new ServerGPU(GPU_q, regular_q, GPU_si,l,"GPU Server", 240, 50);
 	Machine GPU2_m = new Server(GPU_q,GPU_si,l,"GPU Server", 145, 42);
-	l.start(2000); // 2000 is maximum time
+	l.start(20000); // 2000 is maximum time
 
 	
 	/**

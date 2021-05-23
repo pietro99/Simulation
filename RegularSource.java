@@ -36,7 +36,7 @@ public class RegularSource implements CProcess
 		name = n;
 		meanArrTime=33;
 		// put first event in list for initialization
-		list.add(this,0,drawNonstationaryPoissonProcess(meanArrTime)); //target,type,time
+		list.add(this,0,drawNonstationaryPoissonProcess(l.getTime())); //target,type,time
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class RegularSource implements CProcess
 		name = n;
 		meanArrTime=m;
 		// put first event in list for initialization
-		list.add(this,0,drawNonstationaryPoissonProcess(meanArrTime)); //target,type,time
+		list.add(this,0,drawNonstationaryPoissonProcess(l.getTime())); //target,type,time
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class RegularSource implements CProcess
 		// generate duration
 		if(meanArrTime>0)
 		{
-			double duration = drawNonstationaryPoissonProcess(meanArrTime);
+			double duration = drawNonstationaryPoissonProcess(list.getTime());
 			// Create a new event in the eventlist
 			list.add(this,0,tme+duration); //target,type,time
 		}
@@ -108,14 +108,10 @@ public class RegularSource implements CProcess
 	}
 	
         //@TODO: THIS IS NOT CORRECT
-        public static double drawNonstationaryPoissonProcess(double t)    
+        public static double drawNonstationaryPoissonProcess(double currtime)    
         {
-        	double lambda = 0;
-        	if (t >= 3 * 60 * 60 && t < 4 * 60 * 60){        
-        		lambda = 0.2 / 60;        } 
-        	else {     
-        			lambda = 2.0 / 60;
-        	}
-        	return  -Math.log(1 - Math.random()) / lambda;    
+        	double lambda = (0.8*60)*Math.sin(currtime*(2*Math.PI/24*60))+2*60;      
+
+        	return  -Math.log(1 - Math.random()) / (1/lambda);    
         }
 }

@@ -36,8 +36,8 @@ public class GPUSource implements CProcess
 		name = n;
 		meanArrTime=33;
 		// put first event in list for initialization
-		list.add(this,0,drawStationaryPoissonProcess(meanArrTime)); //target,type,time
-	}
+		list.add(this,0,drawStationaryPoissonProcess(meanArrTime));//target,type,time
+		}
 
 	/**
 	*	Constructor, creates objects
@@ -110,16 +110,8 @@ public class GPUSource implements CProcess
   //@TODO: THIS IS NOT CORRECT
     public static double drawStationaryPoissonProcess(double t)
     {        
-    	double lambda = 0;
-    	if (t >= 8 * 60 * 60 && t < 18 * 60 * 60)
-    	{ 
-    		lambda = 1.0 / 60;        
-		} 
-        else 
-        {
-        	lambda = 0.2 / 60;
-    	}        
-    	return  -Math.log(1 - Math.random()) / lambda;    
+    	double lambda = t;       
+    	return  -Math.log(1 - Math.random()) /(1/lambda);    
 	}
     
 }
