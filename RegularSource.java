@@ -111,7 +111,6 @@ public class RegularSource implements CProcess
         public static double drawNonstationaryPoissonProcess(double currtime)    
         {
         	double lambda = (0.8*60)*Math.sin(currtime*(2*Math.PI/24*60))+2*60;      
-
         	return  -Math.log(1 - Math.random()) / (1/lambda);    
         }
 }

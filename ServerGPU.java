@@ -94,14 +94,26 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
     	}
 
     
-    //@TODO: THIS GENERATE UNIFORM RANDOM VARIATES WE NEED NORMAL
-	public static double drawRandomNormal(double mean, double std)
-	{
-		// draw a [0,1] uniform distributed number
-		double u = Math.random();
-		// Convert it into a exponentially distributed random variate with mean 33
-		double res =  Math.pow(Math.log(1 - Math.random()), 2);    
-
-		return res;
-	}
+  //@TODO: THIS GENERATE UNIFORM RANDOM VARIATES WE NEED NORMAL
+  	public static double drawRandomNormal(double mean, double std)
+  	{
+  	  double r, x, y;
+        
+        // find a uniform random point (x, y) inside unit circle
+        do {
+           x = 2.0 * Math.random() - 1.0;
+           y = 2.0 * Math.random() - 1.0;
+           r = x*x + y*y;
+        } 
+        while (r > 1 || r == 0);
+    
+        // apply the Box-Muller formula to get standard Gaussian z    
+        double z = x * Math.sqrt(-2.0 * Math.log(r) / r);
+        
+        double norm = z*std + mean;
+        if (norm <1){
+      	  norm = 1;
+        }
+        return norm;
+     }
 }

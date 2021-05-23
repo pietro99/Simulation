@@ -32,11 +32,33 @@ public class Server extends Machine implements CProcess,ProductAcceptor
 		this.std = std;
 	}
 	
+	public boolean giveProduct(Product p)
+	{
+		// Only accept something if the machine is idle
+		if(status=='i')
+		{
+			// accept the product
+			product=p;
+			// mark starting time
+			product.stamp(eventlist.getTime(),"Production GPU job started",name);
+			// start production
+			startProduction();
+			// Flag that the product has arrived
+			return true;
+		}
+		// Flag that the product has been rejected
+		else{
+			System.out.print("system is busy");
+			return false;
+		}
+	}
+	
 	private void startProduction()
 	{
 		// generate duration
 		if(meanProcTime>0)
-		{
+		{	
+
 			double duration = drawRandomNormal(meanProcTime, std);
 			// Create a new event in the eventlist
 			double tme = eventlist.getTime();
@@ -45,6 +67,7 @@ public class Server extends Machine implements CProcess,ProductAcceptor
 			status='b';
 		}
 		else
+			
 		{
 			if(processingTimes.length>procCnt)
 			{
@@ -60,14 +83,28 @@ public class Server extends Machine implements CProcess,ProductAcceptor
 		}
 	}   
 	
+
 	//@TODO: THIS GENERATE UNIFORM RANDOM VARIATES WE NEED NORMAL
 	public static double drawRandomNormal(double mean, double std)
 	{
-		// draw a [0,1] uniform distributed number
-		double u = Math.random();
-		// Convert it into a exponentially distributed random variate with mean 33
-		double res =  Math.pow(Math.log(1 - Math.random()), 2);    
-
-		return res;
-	}
+	  double r, x, y;
+      
+      // find a uniform random point (x, y) inside unit circle
+      do {
+         x = 2.0 * Math.random() - 1.0;
+         y = 2.0 * Math.random() - 1.0;
+         r = x*x + y*y;
+      } 
+      while (r > 1 || r == 0);
+  
+      // apply the Box-Muller formula to get standard Gaussian z    
+      double z = x * Math.sqrt(-2.0 * Math.log(r) / r);
+      
+      double norm = z*std + mean;
+      if (norm <1){
+    	  norm = 1;
+      }
+      // print it to standard output
+      return norm;
+   }
 }

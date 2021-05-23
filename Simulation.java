@@ -36,8 +36,16 @@ public class Simulation {
 
 	
 	// gpu server
-	Machine GPU_m = new ServerGPU(GPU_q, regular_q, GPU_si,l,"GPU Server", 240, 50);
-	Machine GPU2_m = new Server(GPU_q,GPU_si,l,"GPU Server", 145, 42);
+	Machine GPU_server1 = new ServerGPU(GPU_q, regular_q, GPU_si,l,"GPU Server 1", 240, 50);
+	Machine GPU_server2 = new ServerGPU(GPU_q, regular_q, GPU_si,l,"GPU Server 2", 240, 50);
+
+	Machine regular_server1 = new Server(GPU_q,GPU_si,l,"regular Server 1", 145, 42);
+	Machine regular_server2 = new Server(GPU_q,GPU_si,l,"regular Server 2", 145, 42);
+	Machine regular_server3 = new Server(GPU_q,GPU_si,l,"regular Server 3", 145, 42);
+	Machine regular_server4 = new Server(GPU_q,GPU_si,l,"regular Server 4", 145, 42);
+	Machine regular_server5 = new Server(GPU_q,GPU_si,l,"regular Server 5", 145, 42);
+	Machine regular_server6 = new Server(GPU_q,GPU_si,l,"regular Server 6", 145, 42);
+
 	l.start(20000); // 2000 is maximum time
 
 	
