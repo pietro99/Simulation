@@ -22,7 +22,7 @@ public class Simulation {
     public Machine mach;
     public ArrayList<Integer> gpu_deleys; 
     public ArrayList<Integer> regular_deleys;
-    public static int runs = 50000;
+    public static int runs = 5000;
 
 	
 
@@ -49,7 +49,7 @@ public class Simulation {
 		
 			// A source
 			GPUSource gpu_s = new GPUSource(GPU_q,l,"GPU Source", 270);
-			RegularSource regular_s = new RegularSource(regular_q,GPU_q, l, "Regular Source", 25);
+			RegularSource regular_s = new RegularSource(regular_q,GPU_q, l, "Regular Source", 30);
 		
 			// A sink
 			Sink GPU_si = new Sink("GPU sink");
@@ -67,7 +67,7 @@ public class Simulation {
 			Machine regular_server5 = new Server(regular_q,regular_si,l,"regular Server 5", 145, 42);
 			Machine regular_server6 = new Server(regular_q,regular_si,l,"regular Server 6", 145, 42);
 		
-			l.start(20160); // 2000 is maximum time
+			l.start(60000); // 2000 is maximum time
 			//System.out.println();
 		
 			
@@ -122,12 +122,132 @@ public class Simulation {
 			
 			//System.out.println(gpu_numbers.length);
 			//System.out.println(numbers.length);
+			
+			
+			/*
+			
+			StringBuilder sb1 = new StringBuilder();
+			StringBuilder sb2 = new StringBuilder();
+			StringBuilder sb3 = new StringBuilder();
 
+    		for (int i = 0; i<gpu_deleys.size(); i++) {
+	    		sb1.append(gpu_deleys.get(i));
+	    		sb1.append(",");
+	    	}
+    		for (int i = 0; i<regular_deleys.size(); i++) {
+	    		sb2.append(regular_deleys.get(i));
+	    		sb2.append(",");
+	    	}
+    		sb1.append("\n");
+    		for (int i = 0; i<all_deleys.size(); i++) {
+	    		sb3.append(all_deleys.get(i));
+	    		sb3.append(",");
+	    	}	
+	    	    
+	    	
+
+	    	BufferedWriter br = new BufferedWriter(new FileWriter("batch_means_gpu.csv"));
+			br.write(sb1.toString());
+	    	br.close();
+	    	
+	    	BufferedWriter br2 = new BufferedWriter(new FileWriter("batch_means_regular.csv"));
+			br2.write(sb2.toString());
+	    	br2.close();
+	    	
+	    	BufferedWriter br3 = new BufferedWriter(new FileWriter("batch_means_all.csv"));
+			br3.write(sb3.toString());
+	    	br3.close();
+	    	
+	    	*/
+			/*
+			 * batch means method for the gpu
+			 */
+			int batch_size = 40;
+			
+			int batch_counter = 0;
+			double temp_sum = 0;
+			ArrayList<Double>batch_gpu_deleys = new ArrayList<Double>();
+			for(int i = 0; i<gpu_deleys.size(); i++) {
+				if(batch_counter != batch_size) {
+					temp_sum += gpu_deleys.get(i);
+					batch_counter ++;
+				}
+				else {
+					batch_gpu_deleys.add(temp_sum/batch_size);
+					batch_counter = 0;
+				}
+			}
+			
+			double mean_batch_gpu = 0;
+			for(int i = 0; i<batch_gpu_deleys.size(); i++) {
+				System.out.print(batch_gpu_deleys.get(i)+ ", ");
+				mean_batch_gpu += batch_gpu_deleys.get(i);
+			}
+			mean_batch_gpu = mean_batch_gpu/batch_gpu_deleys.size();
+			
+
+			/*
+			 * batch means method for the regular
+			 */
+		
+			batch_counter = 0;
+			temp_sum = 0;
+			ArrayList<Double>batch_regular_deleys = new ArrayList<Double>();
+			for(int i = 0; i<regular_deleys.size(); i++) {
+				if(batch_counter != batch_size) {
+					temp_sum += regular_deleys.get(i);
+					batch_counter ++;
+				}
+				else {
+					batch_regular_deleys.add(temp_sum/batch_size);
+					batch_counter = 0;
+				}
+			}
+
+			double mean_batch_regular = 0;
+			for(int i = 0; i<batch_regular_deleys.size(); i++) {
+				System.out.print(batch_regular_deleys.get(i)+ ", ");
+				mean_batch_regular += batch_regular_deleys.get(i);
+			}
+			mean_batch_regular = mean_batch_regular/batch_regular_deleys.size();
+			
+			
+			/*
+			 * batch means method for all
+			 */
+		
+			batch_counter = 0;
+			temp_sum = 0;
+			ArrayList<Double>batch_all_deleys = new ArrayList<Double>();
+			for(int i = 0; i<all_deleys.size(); i++) {
+				if(batch_counter != batch_size) {
+					temp_sum += all_deleys.get(i);
+					batch_counter ++;
+				}
+				else {
+					batch_all_deleys.add(temp_sum/batch_size);
+					batch_counter = 0;
+				}
+			}
+
+			double mean_batch_all = 0;
+			for(int i = 0; i<batch_all_deleys.size(); i++) {
+				System.out.print(batch_all_deleys.get(i)+ ", ");
+				mean_batch_all += batch_all_deleys.get(i);
+			}
+			mean_batch_all = mean_batch_all/batch_all_deleys.size();
+			
+			
+			
+			
+			
 		
 			Collections.sort(gpu_deleys);
 			Collections.sort(regular_deleys);
 			Collections.sort(all_deleys);
-		
+			Collections.sort(batch_gpu_deleys);
+			Collections.sort(batch_regular_deleys);
+			Collections.sort(batch_all_deleys);
 	
 			System.out.print("\n gpu deleys: [");
 		
@@ -160,6 +280,14 @@ public class Simulation {
 			double percentile_gpu_90 = gpu_deleys.get(index_gpu);
 			double percentile_regular_90 = regular_deleys.get(index_regular);
 			double percentile_all_90 = all_deleys.get(index_all);
+			
+			int index_gpu_batch = (int) Math.ceil(90 / 100.0 * (batch_gpu_deleys.size()-1));
+			int index_regular_batch = (int) Math.ceil(90 / 100.0 * (batch_regular_deleys.size()-1));
+			int index_all_batch = (int) Math.ceil(90 / 100.0 * (batch_all_deleys.size()-1));
+	
+			double percentile_gpu_90_batch = batch_gpu_deleys.get(index_gpu_batch);
+			double percentile_regular_90_batch = batch_regular_deleys.get(index_regular_batch);
+			double percentile_all_90_batch = batch_all_deleys.get(index_all_batch);
 		
 		
 		
@@ -174,12 +302,12 @@ public class Simulation {
 			System.out.println("90% percentile deley regular: "+ percentile_regular_90);
 			System.out.println("90% percentile deley all: "+ percentile_all_90);
 			
-			output[counter][0] = mean_deley_gpu;
-			output[counter][1] = mean_deley_regular;
-			output[counter][2] = mean_deley_all;
-			output[counter][3] = percentile_gpu_90;
-			output[counter][4] = percentile_regular_90;
-			output[counter][5] = percentile_all_90;
+			output[counter][0] = mean_batch_gpu;
+			output[counter][1] = mean_batch_regular;
+			output[counter][2] = mean_batch_all;
+			output[counter][3] = percentile_gpu_90_batch;
+			output[counter][4] = percentile_regular_90_batch;
+			output[counter][5] = percentile_all_90_batch;
 			counter++;
 			
     	}
