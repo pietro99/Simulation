@@ -30,7 +30,7 @@ public class Queue implements ProductAcceptor
 	*/
 	public boolean askProduct(Machine machine)
 	{
-		// This is only possible with a non-empty queue
+		//if contains a CPU job, give priority
 		int index = 0;
 		for(int i = 0; i<row.size(); i++) {
 			if(row.get(i).getType() == 1) {
@@ -38,6 +38,7 @@ public class Queue implements ProductAcceptor
 			}
 		}
 		
+		// This is only possible with a non-empty queue
 		if(row.size()>0)
 		{
 			// If the machine accepts the product

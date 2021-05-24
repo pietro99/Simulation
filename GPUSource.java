@@ -108,12 +108,10 @@ public class GPUSource implements CProcess
 		}
 	}
         
-  //@TODO: THIS IS NOT CORRECT
     public static double drawStationaryPoissonProcess(double t)
     {        
     	double lambda = t; 
     	double time = -Math.log(1 - Math.random()) * lambda;
-    	System.out.println(time);
     	return  time;    
 	}
     

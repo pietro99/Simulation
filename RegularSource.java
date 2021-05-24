@@ -88,15 +88,18 @@ public class RegularSource implements CProcess
 		// give arrived product to queue
 		Product p = new Product(0);
 		p.stamp(tme,"Creation",name);
-		if(queue.getQueueLength()>= queue_gpu.getQueueLength()) {
+		
+		//policy for determining to which queue the job will go to
+		if(queue.getQueueLength()>= queue_gpu.getQueueLength()+5) 
+		{
 			queue_gpu.giveProduct(p);
 		}
-		else {
+		else 
+		{
 			queue.giveProduct(p);
 		}
 		
 		// generate duration
-		
 		if(meanArrTime>0)
 		{
 			double duration = drawNonstationaryPoissonProcess(list.getTime(), meanArrTime);
@@ -123,7 +126,6 @@ public class RegularSource implements CProcess
         	double lambda = (0.8*24)*Math.sin(currtime*(2*Math.PI/24*60))+meantime;
 
         	double time = -Math.log(1 - Math.random()) / (1/lambda); 
-            System.out.println("time = "+ time);
 
         	return  time;    
     }

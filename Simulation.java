@@ -68,7 +68,7 @@ public class Simulation {
 			Machine regular_server5 = new Server(regular_q,regular_si,l,"regular Server 5", 145, 42);
 			Machine regular_server6 = new Server(regular_q,regular_si,l,"regular Server 6", 145, 42);
 		
-			l.start(100000); 
+			l.start(sim_length); 
 			
 			String[] events = regular_si.getEvents();
 			double[] times = regular_si.getTimes();
@@ -165,15 +165,15 @@ public class Simulation {
 	    		sb3.append(",");
 	    	}	
 	    	    
-	    	BufferedWriter br = new BufferedWriter(new FileWriter("batch_means_gpu.csv"));
+	    	BufferedWriter br = new BufferedWriter(new FileWriter("batch_means_gpu_improved.csv"));
 			br.write(sb1.toString());
 	    	br.close();
 	    	
-	    	BufferedWriter br2 = new BufferedWriter(new FileWriter("batch_means_regular.csv"));
+	    	BufferedWriter br2 = new BufferedWriter(new FileWriter("batch_means_regular_improved.csv"));
 			br2.write(sb2.toString());
 	    	br2.close();
 	    	
-	    	BufferedWriter br3 = new BufferedWriter(new FileWriter("batch_means_all.csv"));
+	    	BufferedWriter br3 = new BufferedWriter(new FileWriter("batch_means_all_improved.csv"));
 			br3.write(sb3.toString());
 	    	br3.close();
 	  

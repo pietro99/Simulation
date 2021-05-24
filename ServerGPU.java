@@ -61,7 +61,6 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
 		}
 		// Flag that the product has been rejected
 		else { 
-			System.out.println("\nBUSYYY\n");
 			return false;
 		
 		}
@@ -74,6 +73,7 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
 		// Remove product from system
 		product.stamp(tme,"Production complete",name);
 
+		//give product to the appropiate sink
 		if(product.getStations().get(0) == "Regular Source")
 		{
 			sink.giveProduct(product);
@@ -82,6 +82,7 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
 		{
 			gpu_sink.giveProduct(product);
 		}
+		
 		//sink.giveProduct(product);
 		product=null;
 		// set machine status to idle
@@ -132,6 +133,7 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
         while (r > 1 || r == 0);
         double z = x * Math.sqrt(-2.0 * Math.log(r) / r);
         double norm = z*std + mean;
+        
         if (norm <1)
       	  norm = 1;
         

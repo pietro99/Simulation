@@ -48,7 +48,6 @@ public class Server extends Machine implements CProcess,ProductAcceptor
 		}
 		// Flag that the product has been rejected
 		else { 
-			System.out.print("\nBUSYYY\n");
 			return false;
 		
 		}
@@ -85,7 +84,6 @@ public class Server extends Machine implements CProcess,ProductAcceptor
 	}   
 	
 
-	//@TODO: THIS GENERATE UNIFORM RANDOM VARIATES WE NEED NORMAL
 	public static double drawRandomNormal(double mean, double std)
 	{
 	  double r, x, y;
