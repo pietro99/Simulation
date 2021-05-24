@@ -88,11 +88,12 @@ public class RegularSource implements CProcess
 		// give arrived product to queue
 		Product p = new Product(0);
 		p.stamp(tme,"Creation",name);
-		if(queue.getQueueLength()>= queue_gpu.getQueueLength()) {
+		if(queue.getQueueLength()>= queue_gpu.getQueueLength()+5) {
 			queue_gpu.giveProduct(p);
 		}
-		else 
+		else {
 			queue.giveProduct(p);
+		}
 		
 		// generate duration
 		

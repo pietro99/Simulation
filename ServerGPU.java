@@ -73,10 +73,15 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
 		System.out.println("Product finished at time = " + tme);
 		// Remove product from system
 		product.stamp(tme,"Production complete",name);
-		if("product first event = "+product.getStations().get(0) == "Regular Source"){
+
+		if(product.getStations().get(0) == "Regular Source")
+		{
 			sink.giveProduct(product);
 		}
-		else gpu_sink.giveProduct(product);
+		else
+		{
+			gpu_sink.giveProduct(product);
+		}
 		//sink.giveProduct(product);
 		product=null;
 		// set machine status to idle
@@ -116,26 +121,20 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
     	}
 
     
-  //@TODO: THIS GENERATE UNIFORM RANDOM VARIATES WE NEED NORMAL
   	public static double drawRandomNormal(double mean, double std)
   	{
   	  double r, x, y;
-        
-        // find a uniform random point (x, y) inside unit circle
         do {
            x = 2.0 * Math.random() - 1.0;
            y = 2.0 * Math.random() - 1.0;
            r = x*x + y*y;
         } 
         while (r > 1 || r == 0);
-    
-        // apply the Box-Muller formula to get standard Gaussian z    
         double z = x * Math.sqrt(-2.0 * Math.log(r) / r);
-        
         double norm = z*std + mean;
-        if (norm <1){
+        if (norm <1)
       	  norm = 1;
-        }
+        
         return norm;
      }
 }

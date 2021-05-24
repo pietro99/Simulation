@@ -84,6 +84,7 @@ public class GPUSource implements CProcess
 		System.out.println("GPU Job Arrival at time = " + tme);
 		// give arrived product to queue
 		Product p = new Product(1);
+
 		p.stamp(tme,"Creation",name);
 		queue.giveProduct(p);
 		// generate duration
