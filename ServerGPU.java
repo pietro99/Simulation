@@ -9,7 +9,7 @@ package Simulation;
  */
 public class ServerGPU extends Machine implements CProcess,ProductAcceptor
 {
-	private Queue gpu_queue;
+	private ProductAcceptor gpu_sink;
 	private double std;
 
 
@@ -21,23 +21,21 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
 	*	@param e	Eventlist that will manage events
 	*	@param n	The name of the machine
 	*/
-	public ServerGPU(Queue q,Queue q2, ProductAcceptor s, CEventList e, String n)
+	public ServerGPU(Queue q, ProductAcceptor s,ProductAcceptor s2, CEventList e, String n)
 	{
 		super(q,  s,  e,  n);
 		//arbitrary standard deviation
 		std = 1;
 		//add gpu_queue 
-		gpu_queue = q2;
-		gpu_queue.askProduct(this);
+		gpu_sink = s2;
 	}
 	
 	
-	public ServerGPU(Queue q, Queue q2,ProductAcceptor s, CEventList e, String n, int i, double std) {
+	public ServerGPU(Queue q,ProductAcceptor s,ProductAcceptor s2, CEventList e, String n, int i, double std) {
 		super(q,  s,  e,  n, i);
 		
 		this.std = std;
-		gpu_queue = q2;
-		gpu_queue.askProduct(this);	
+		gpu_sink = s2;
 	}
 
 
@@ -50,7 +48,7 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
 	public boolean giveProduct(Product p)
 	{
 		// Only accept something if the machine is idle
-		if(status=='i' && gpu_queue.getQueueLength() == 0)
+		if(status=='i')
 		{
 			// accept the product
 			product=p;
@@ -62,7 +60,31 @@ public class ServerGPU extends Machine implements CProcess,ProductAcceptor
 			return true;
 		}
 		// Flag that the product has been rejected
-		else return false;
+		else { 
+			System.out.println("\nBUSYYY\n");
+			return false;
+		
+		}
+	}
+    
+    public void execute(int type, double tme)
+	{
+		// show arrival
+		System.out.println("Product finished at time = " + tme);
+		// Remove product from system
+		product.stamp(tme,"Production complete",name);
+		if("product first event = "+product.getStations().get(0) == "Regular Source"){
+			sink.giveProduct(product);
+		}
+		else gpu_sink.giveProduct(product);
+		//sink.giveProduct(product);
+		product=null;
+		// set machine status to idle
+		status='i';
+		
+		// Ask the queue for products
+		queue.askProduct(this);
+	
 	}
 
     private void startProduction()

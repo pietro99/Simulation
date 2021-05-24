@@ -47,9 +47,10 @@ public class Server extends Machine implements CProcess,ProductAcceptor
 			return true;
 		}
 		// Flag that the product has been rejected
-		else{
-			System.out.print("system is busy");
+		else { 
+			System.out.print("\nBUSYYY\n");
 			return false;
+		
 		}
 	}
 	

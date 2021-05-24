@@ -12,7 +12,9 @@ public class RegularSource implements CProcess
 	/** Eventlist that will be requested to construct events */
 	private CEventList list;
 	/** Queue that buffers products for the machine */
-	private ProductAcceptor queue;
+	private Queue queue;
+	private Queue queue_gpu;
+
 	/** Name of the source */
 	private String name;
 	/** Mean interarrival time */
@@ -32,11 +34,11 @@ public class RegularSource implements CProcess
 	public RegularSource(ProductAcceptor q,CEventList l,String n)
 	{
 		list = l;
-		queue = q;
+		queue = (Queue) q;
 		name = n;
 		meanArrTime=33;
 		// put first event in list for initialization
-		list.add(this,0,drawNonstationaryPoissonProcess(l.getTime())); //target,type,time
+		list.add(this,0,drawNonstationaryPoissonProcess(l.getTime(), meanArrTime)); //target,type,time
 	}
 
 	/**
@@ -47,14 +49,15 @@ public class RegularSource implements CProcess
 	*	@param n	Name of object
 	*	@param m	Mean arrival time
 	*/
-	public RegularSource(ProductAcceptor q,CEventList l,String n,double m)
+	public RegularSource(ProductAcceptor q, ProductAcceptor q2,CEventList l,String n,double m)
 	{
 		list = l;
-		queue = q;
+		queue = (Queue) q;
+		queue_gpu = (Queue) q2;
 		name = n;
 		meanArrTime=m;
 		// put first event in list for initialization
-		list.add(this,0,drawNonstationaryPoissonProcess(l.getTime())); //target,type,time
+		list.add(this,0,drawNonstationaryPoissonProcess(l.getTime(), meanArrTime)); //target,type,time
 	}
 
 	/**
@@ -68,7 +71,7 @@ public class RegularSource implements CProcess
 	public RegularSource(ProductAcceptor q,CEventList l,String n,double[] ia)
 	{
 		list = l;
-		queue = q;
+		queue = (Queue) q;
 		name = n;
 		meanArrTime=-1;
 		interarrivalTimes=ia;
@@ -83,13 +86,19 @@ public class RegularSource implements CProcess
 		// show arrival
 		System.out.println("Regular Job Arrival at time = " + tme);
 		// give arrived product to queue
-		Product p = new Product();
+		Product p = new Product(0);
 		p.stamp(tme,"Creation",name);
-		queue.giveProduct(p);
+		if(queue.getQueueLength()>= queue_gpu.getQueueLength()) {
+			queue_gpu.giveProduct(p);
+		}
+		else 
+			queue.giveProduct(p);
+		
 		// generate duration
+		
 		if(meanArrTime>0)
 		{
-			double duration = drawNonstationaryPoissonProcess(list.getTime());
+			double duration = drawNonstationaryPoissonProcess(list.getTime(), meanArrTime);
 			// Create a new event in the eventlist
 			list.add(this,0,tme+duration); //target,type,time
 		}
@@ -107,10 +116,14 @@ public class RegularSource implements CProcess
 		}
 	}
 	
-        //@TODO: THIS IS NOT CORRECT
-        public static double drawNonstationaryPoissonProcess(double currtime)    
-        {
-        	double lambda = (0.8*60)*Math.sin(currtime*(2*Math.PI/24*60))+2*60;      
-        	return  -Math.log(1 - Math.random()) / (1/lambda);    
-        }
+    public static double drawNonstationaryPoissonProcess(double currtime, double meantime)    
+    {
+
+        	double lambda = (0.8*24)*Math.sin(currtime*(2*Math.PI/24*60))+meantime;
+
+        	double time = -Math.log(1 - Math.random()) / (1/lambda); 
+            System.out.println("time = "+ time);
+
+        	return  time;    
+    }
 }

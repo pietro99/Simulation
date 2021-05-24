@@ -83,7 +83,7 @@ public class GPUSource implements CProcess
 		// show arrival
 		System.out.println("GPU Job Arrival at time = " + tme);
 		// give arrived product to queue
-		Product p = new Product();
+		Product p = new Product(1);
 		p.stamp(tme,"Creation",name);
 		queue.giveProduct(p);
 		// generate duration
@@ -110,8 +110,10 @@ public class GPUSource implements CProcess
   //@TODO: THIS IS NOT CORRECT
     public static double drawStationaryPoissonProcess(double t)
     {        
-    	double lambda = t;       
-    	return  -Math.log(1 - Math.random()) /(1/lambda);    
+    	double lambda = t; 
+    	double time = -Math.log(1 - Math.random()) * lambda;
+    	System.out.println(time);
+    	return  time;    
 	}
     
 }

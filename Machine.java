@@ -105,6 +105,7 @@ public class Machine implements CProcess,ProductAcceptor
 		product=null;
 		// set machine status to idle
 		status='i';
+		
 		// Ask the queue for products
 		queue.askProduct(this);
 	}

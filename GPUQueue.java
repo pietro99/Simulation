@@ -2,12 +2,7 @@ package Simulation;
 
 import java.util.ArrayList;
 
-/**
- *	Queue that stores products until they can be handled on a machine machine
- *	@author Joel Karel
- *	@version %I%, %G%
- */
-public class Queue implements ProductAcceptor
+public class GPUQueue extends Queue
 {
 	/** List in which the products are kept */
 	private ArrayList<Product> row;
@@ -18,7 +13,7 @@ public class Queue implements ProductAcceptor
 	*	Initializes the queue and introduces a dummy machine
 	*	the machine has to be specified later
 	*/
-	public Queue()
+	public GPUQueue()
 	{
 		row = new ArrayList<>();
 		requests = new ArrayList<>();
@@ -31,19 +26,12 @@ public class Queue implements ProductAcceptor
 	public boolean askProduct(Machine machine)
 	{
 		// This is only possible with a non-empty queue
-		int index = 0;
-		for(int i = 0; i<row.size(); i++) {
-			if(row.get(i).getType() == 1) {
-				index = i;
-			}
-		}
-		
 		if(row.size()>0)
 		{
 			// If the machine accepts the product
-			if(machine.giveProduct(row.get(index)))
+			if(machine.giveProduct(row.get(0)))
 			{
-				row.remove(index);// Remove it from the queue
+				row.remove(0);// Remove it from the queue
 				return true;
 			}
 			else
